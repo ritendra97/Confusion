@@ -1,0 +1,206 @@
+//Coin change Permutation 
+import java.util.*;
+public class DynamicProgramming 
+{
+	public static int coinchangepermutation(int coins[],int amount)
+	{
+		int DP[] = new int[amount+1];
+		
+		DP[0]=1;
+		for(int amt=1;amt<DP.length;amt++)
+		{
+			for(int j=0;j<coins.length;j++)
+			{
+				if(coins[j]<=amt)
+				{
+					// here suppose amt is 7 than 7-coins[0]==2 so ramout = 7-2 and so on than 3 and than 5.......
+					int ramount = amt-coins[j];
+					DP[amt]+=DP[ramount];
+				}
+			}
+		}
+		return DP[amount];
+	}
+	public static void main(String[] args) 
+	{
+		int coins[]= {2,3,5};
+		
+		int amount = 7;
+		System.out.println(coinchangepermutation(coins,7));
+	}
+}
+
+//Coin change combination
+import java.util.*;
+public class DynamicProgramming 
+{
+	public static int coincombination(int coin[],int pay)
+	{
+		int DP[] = new int[pay+1];
+		
+		DP[0]=1;
+		for(int i=0;i<coin.length;i++)
+		{
+			for(int j=coin[i];j<DP.length;j++)
+			{
+				DP[j]+=DP[j-coin[i]];
+			}
+		}
+		return DP[pay];
+	}
+	public static void main(String[] args) 
+	{
+		int coin[] = {2,3,5};
+		
+		System.out.println(coincombination(coin,7));
+	}
+}
+
+// Road Cutting
+import java.util.*;
+public class DynaminProgramming 
+{
+	public static int cutRod(int price[],int size)
+	{
+		int np[] = new int[price.length+1];
+		for(int i=0;i<price.length;i++)
+		{
+			np[i+1]=price[i];
+		}
+		
+		int DP[] = new int[np.length];
+		DP[0]=0;
+		DP[1]=np[1];
+		
+		for(int i=2;i<DP.length;i++)
+		{
+			DP[i]=np[i];
+			int li=1;
+			int ri=i-1;
+			while(li<=ri)
+			{
+				if(DP[li]+DP[ri]>DP[i])
+					DP[i]=DP[li]+DP[ri];
+				li++;
+				ri--;
+			}
+		}
+		return DP[DP.length-1];
+	}
+	public static void main(String[] args) 
+	{
+		int price[] = new int[] {1, 5, 8, 9, 10, 17, 17, 20};
+		int size = price.length; 
+        System.out.println("Maximum Obtainable Value is " + cutRod(price, size));
+	}
+}
+
+// Road cuttting
+class GFG {
+    
+    public int cutRod(int price[], int n) {
+        int w = price.length;
+        int wts[] = new int[w];
+        
+        for(int i=0;i<w;i++){
+            wts[i]=i+1;
+        }
+        
+        int dp[] = new int[n+1];
+		
+		for(int bcap=0;bcap<=n;bcap++) {
+			
+			int max = 0;
+			for(int i=0;i<price.length;i++) {
+				
+				if(wts[i]<=bcap) {
+					int rcap = bcap-wts[i];
+					int rcapv  = dp[rcap];
+					int tcap = rcapv+price[i];
+					
+					if(max<tcap) {
+						max=tcap;
+					}
+				}
+				
+			}
+			dp[bcap]=max;
+		}
+		return dp[n];
+    }
+}
+//Climbing Stairs with minimum move
+import java.util.*;
+public class StackProblem 
+{
+	public static int minstep(int arr[]) {
+		
+		int n = arr.length;
+		Integer dp[] = new Integer[n+1];
+		
+		dp[n]=0;
+		
+		
+		for(int i=n-1;i>=0;i--) {
+			if(arr[i]>0) {
+				
+				int min = Integer.MAX_VALUE;
+				for(int j=1;j<=arr[i] && (i+j)<dp.length;j++) {
+					
+					if(dp[i+j]!= null) {
+						min = Math.min(dp[i+j], min);
+					}
+				}
+				if(min!=Integer.MAX_VALUE) {
+					
+					dp[i] = min+1;
+				}
+			}
+		}
+		return dp[0];
+	}
+	public static void main(String[] args) {
+	   
+		int arr[] = {3,3,0,2,1,2,4,2,0,0};
+		System.out.println(minstep(arr));		
+	}
+}
+// jump game 2
+class Solution 
+{
+    public int jump(int[] nums) 
+    {
+        int currjump=0;
+		int nextjump=0;
+		int jump=0;
+		for(int i=0;i<nums.length-1;i++)
+		{
+			nextjump = Math.max(nextjump, i+nums[i]);
+			
+			if(i==currjump)
+			{
+				jump++;
+				currjump=nextjump;
+			}
+		}
+		return jump;
+    }
+}
+// jumgame 1
+class Solution {
+    public boolean canJump(int[] nums) {
+       int next_move=0;
+        int curr_move=0;
+        if(nums.length==0 || nums.length==1)
+            return true;
+        for(int i=0;i<nums.length-1;i++){
+            
+            next_move = Math.max(next_move,i+nums[i]);
+            
+            if(i==curr_move){
+                curr_move=next_move;
+            }
+        }
+        return curr_move>=nums.length-1;
+    }
+}
